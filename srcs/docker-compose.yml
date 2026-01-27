@@ -1,5 +1,8 @@
 services:
   nginx:
     build: ./requirements/nginx/
+    restart: always
     ports:
       - "8080:80"
+    environment:
+      - DOMAINE_NAME=${DOMAIN_NAME}
