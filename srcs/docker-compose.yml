@@ -32,4 +32,9 @@ secrets:
 
 volumes:
   db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/zzaoui/data
+      o: bind
 

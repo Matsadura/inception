@@ -2,10 +2,10 @@ COMPOSE	= ./srcs/docker-compose.yml
 USER_DATA = /home/zzaoui/data
 DB_DATA = $(USER_DATA)/mariadb
 
-all: up
+all: setup up
 
 setup:
-	mkdir -p $(DB_DATA)
+	sudo mkdir -p $(DB_DATA)
 
 up:
 	@docker compose -f $(COMPOSE) up -d --build

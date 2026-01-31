@@ -20,4 +20,4 @@ EOF
 
 fi
 
-exec mysqld --user=mysql --bind-address=0.0.0.0
+exec "$@"
