@@ -63,7 +63,26 @@ services:
     build: ./requirements/bonus/website/
     restart: always
     ports:
+      - "1212:1212"
+    networks:
+      - inception_network
+
+  cadvisor:
+    container_name: cadvisor
+    build: ./requirements/bonus/cadvisor
+    depends_on:
+      - nginx
+      - mariadb
+      - wordpress
+      - website
+    restart: always
+    ports:
       - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - inception_network
 

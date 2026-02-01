@@ -6,6 +6,6 @@ RUN apt-get update && apt-get install -y nginx \
 COPY conf/default.conf /etc/nginx/conf.d/default.conf
 COPY index.html /var/www/html/index.html
 
-EXPOSE 8080
+EXPOSE 1212
 
 CMD ["nginx", "-g", "daemon off;"]
