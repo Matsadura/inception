@@ -1,4 +1,5 @@
 COMPOSE	= ./srcs/docker-compose.yml
+COMPOSE_BONUS = ./srcs/docker-compose.bonus.yml
 USER_DATA = /home/zzaoui/data
 DB_DATA = $(USER_DATA)/mariadb
 WP_DATA  = $(USER_DATA)/wordpress
@@ -7,9 +8,7 @@ all: setup up
 
 setup:
 	sudo mkdir -p $(DB_DATA) $(WP_DATA)
-# Set WordPress folder to www-data (UID 33)
 	@sudo chown -R 33:33 $(WP_DATA)
-	# Set MariaDB folder to mysql (UID 999 is standard for the official image)
 	@sudo chown -R 999:999 $(DB_DATA)
 
 up:
@@ -17,6 +16,7 @@ up:
 
 down:
 	@docker compose -f $(COMPOSE) down
+	@docker compose -f $(COMPOSE_BONUS) down
 
 clean: down
 	@docker system prune -a -f
@@ -27,6 +27,11 @@ fclean: clean
 
 re: fclean all
 
+bonus: setup
+	@docker compose -f $(COMPOSE_BONUS) up -d --build
+
+rebonus: fclean bonus
+
 logs:
 	@docker compose -f $(COMPOSE) logs -f
 
@@ -34,4 +39,4 @@ info:
 	@docker ps
 
 
-.PHONY = all up down clean re fclean logs info setup
+.PHONY = all up down clean re fclean logs info setup bonus rebonus

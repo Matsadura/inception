@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inception Bonus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #020617;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #22c55e;
+        }
+
+        body.light {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #020617;
+            --muted: #475569;
+            --accent: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-width: 420px;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        p {
+            color: var(--muted);
+            margin: 0.75rem 0;
+        }
+
+        .info {
+            margin-top: 1.5rem;
+            text-align: left;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .info strong {
+            color: var(--accent);
+        }
+
+        button {
+            margin-top: 1.5rem;
+            background: none;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Inception <span>Bonus</span></h1>
+        <p>Static page served by NGINX inside Docker</p>
+
+        <div class="info">
+            <div><strong>Hostname:</strong> <span id="hostname">unknown</span></div>
+        </div>
+
+        <button onclick="toggleTheme()">🌗 Toggle theme</button>
+
+        <footer>
+            <p>42 School · Docker · NGINX</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle("light");
+        }
+
+        document.getElementById("hostname").textContent =
+            window.location.hostname || "container";
+    </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx/
+    depends_on:
+      - wordpress
+    restart: always
+    ports:
+      - "443:443"
+    environment:
+      - DOMAINE_NAME=${DOMAINE_NAME}
+    volumes:
+      - wp_data:/var/www/wordpress
+    networks:
+      - inception_network
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    restart: always
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - DB_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+    secrets:
+      - db_password
+      - db_root_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - inception_network
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress/
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      - DOMAINE_NAME=${DOMAINE_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - WP_USER=${WP_USER}
+      - WP_USER_EMAIL=${WP_USER_EMAIL}
+      - WP_USER_PASSWORD_FILE=/run/secrets/wp_user_password
+      - WP_ADMIN=${WP_ADMIN}
+      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+      - WP_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
+    secrets:
+      - db_password
+      - wp_user_password
+      - wp_admin_password
+    volumes:
+      - wp_data:/var/www/wordpress
+    networks:
+      - inception_network
+  
+  website:
+    container_name: website
+    build: ./requirements/bonus/website/
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - inception_network
+
+secrets:
+  db_password:
+    file: ${DB_PASSWORD_FILE}
+  db_root_password:
+    file: ${DB_ROOT_PASSWORD_FILE}
+  wp_user_password:
+    file: ${WP_USER_PASSWORD_FILE}
+  wp_admin_password:
+    file: ${WP_ADMIN_PASSWORD_FILE}
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/zzaoui/data/mariadb
+      o: bind
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/zzaoui/data/wordpress
+      o: bind
+
+networks:
+  inception_network:
+    driver: bridge
