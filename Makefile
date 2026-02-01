@@ -7,7 +7,10 @@ all: setup up
 
 setup:
 	sudo mkdir -p $(DB_DATA) $(WP_DATA)
-	@sudo chmod 777 $(DB_DATA) $(WP_DATA)
+# Set WordPress folder to www-data (UID 33)
+	@sudo chown -R 33:33 $(WP_DATA)
+	# Set MariaDB folder to mysql (UID 999 is standard for the official image)
+	@sudo chown -R 999:999 $(DB_DATA)
 
 up:
 	@docker compose -f $(COMPOSE) up -d --build
