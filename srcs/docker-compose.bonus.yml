@@ -58,6 +58,15 @@ services:
     networks:
       - inception_network
   
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer/
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - inception_network
+
   website:
     container_name: website
     build: ./requirements/bonus/website/
