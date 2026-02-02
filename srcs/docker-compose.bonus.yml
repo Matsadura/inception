@@ -67,6 +67,25 @@ services:
       - "6379:6379"
     networks:
       - inception_network
+  
+  ftp:
+    container_name: ftp
+    build: ./requirements/bonus/ftp/
+    depends_on:
+      - wordpress
+    restart: always
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    volumes:
+      - wp_data:/var/www/wordpress
+    environment:
+      - FTP_USER=${FTP_USER}
+      - FTP_PASSWORD_FILE=/run/secrets/ftp_password
+    secrets:
+      - ftp_password
+    networks:
+      - inception_network
 
   adminer:
     container_name: adminer
@@ -114,6 +133,8 @@ secrets:
     file: ${WP_USER_PASSWORD_FILE}
   wp_admin_password:
     file: ${WP_ADMIN_PASSWORD_FILE}
+  ftp_password:
+    file: ${FTP_PASSWORD_FILE}
 
 volumes:
   db_data:
