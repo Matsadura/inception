@@ -37,6 +37,7 @@ services:
     restart: always
     depends_on:
       - mariadb
+      - redis
     environment:
       - DOMAINE_NAME=${DOMAINE_NAME}
       - DB_HOST=${DB_HOST}
@@ -58,6 +59,15 @@ services:
     networks:
       - inception_network
   
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis/
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - inception_network
+
   adminer:
     container_name: adminer
     build: ./requirements/bonus/adminer/

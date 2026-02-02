@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget ca-certificates wordpress php php-fpm php-mysql && \
+    apt-get install -y --no-install-recommends wget ca-certificates wordpress php php-fpm php-mysql php-redis && \
     rm -rf /var/lib/apt/lists/*
 
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \

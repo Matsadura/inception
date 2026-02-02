@@ -47,6 +47,12 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
     log "Installing WordPress site..."
     wp core install --path=/var/www/wordpress --url=$DOMAINE_NAME --title="Inception" --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASS --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
 
+    log "Setting up redis cache plugin..."
+    wp plugin install redis-cache --activate --path=/var/www/wordpress --allow-root
+    wp config set WP_REDIS_HOST redis --path=/var/www/wordpress --allow-root
+    wp config set WP_REDIS_PORT 6379 --path=/var/www/wordpress --allow-root
+    wp redis enable --path=/var/www/wordpress --allow-root
+
     log "Creating secondary user ($WP_USER)..."
     wp user create $WP_USER $WP_USER_EMAIL --user_pass=$WP_USER_PASS --role=author --path=/var/www/wordpress --allow-root
     
