@@ -6,6 +6,8 @@ DB_ROOT_PASS=$(cat $DB_ROOT_PASSWORD_FILE)
 
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
+mkdir -p /var/lib/mysql
+chown -R mysql:mysql /var/lib/mysql
 
 if [[ ! -d "/var/lib/mysql/$DB_NAME" ]]; then
 	mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
